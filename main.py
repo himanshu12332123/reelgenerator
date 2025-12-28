@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 
 UPLOAD_FOLDER = 'user_uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -31,6 +31,7 @@ def create():
                     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'],rec_id))
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'],rec_id, filename))
                 input_files.append(file.filename)
+                print(file.filename)
             #capture the text
             with open(os.path.join(app.config['UPLOAD_FOLDER'],rec_id,"desc.txt"), "w") as f:
                 f.write(desc)
@@ -42,6 +43,8 @@ def create():
 
 @app.route("/gallery")
 def gallery():
-    return render_template("gallery.html")
+    reels = os.listdir("static/reels")
+    print(reels)
+    return render_template("gallery.html",reels=reels)
 
 app.run(debug=True)
